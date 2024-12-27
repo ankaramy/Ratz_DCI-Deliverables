@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Location</title>
+    
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.1/mapbox-gl.js"></script>
+    <link rel="stylesheet" href="walle.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>WALL .€</h1>
+            <p>The New European Bauhaus is now for everyone</p>
+        </header>
+        <main class="lower_content">
+                <div class="content">
+                    <h2>Where is your project located?</h2>
+                    <p>Help us understand what kind of climate your building is dealing with.</p>
+                    <div class="browse-button">
+                        <input type="text" id="location-input" placeholder="Browse for a location here ...">
+                        <button onclick="searchLocation()">Search</button>
+                    </div>
+                    <div class="icon"></div>
+                </div>
+                <script src="https://api.mapbox.com/geocoding/v5/mapbox.places/"></script>
+                <div class="globe_img">
+                    <div id="map"></div>
+                        <script>
+                            mapboxgl.accessToken = 'pk.eyJ1Ijoic2FsdmFkb3JjIiwiYSI6ImNtNHYza2FicjAwejgyanMzb2cyZmM2OHEifQ.KJ2HXOxfF-o6bFkj1RHZJw';
+                            const map = new mapboxgl.Map({
+                                container: 'map', // container ID
+                                center: [-74.5, 40], // starting position [lng, lat]. Note that lat must be set between -90 and 90
+                                zoom: 1.3 // starting zoom
+                            });
+
+                            function searchLocation() { 
+                                var location = document.getElementById('location-input').value; 
+                                var url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + location + '.json?access_token=' + mapboxgl.accessToken; 
+                                
+                                fetch(url) 
+                                    .then(response => response.json()) 
+                                    .then(data => { 
+                                        var coordinates = data.features[0].geometry.coordinates; 
+                                        map.flyTo({ 
+                                            center: coordinates, 
+                                            essential: true // this animation is considered essential with respect to prefers-reduced-motion 
+                                        }); 
+                                    }) 
+                                    .catch(error => console.error('Error:', error)); }
+                        </script>
+                </div>
+        </main>
+        <footer>
+            <p>Developed by: Yashashvi Agrawal, Ramy Anka, Salvador Cantuarias, Nihal Mannat, Marcos Navarrete</p>
+            <p>Developed at: <span class="iaac">IAAC</span> Institute for Advanced Architecture of Catalonia</p>
+        </footer>
+    </div>
+</body>
+</html>
